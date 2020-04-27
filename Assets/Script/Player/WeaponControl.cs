@@ -82,7 +82,30 @@ public class WeaponControl : MonoBehaviour
 	/// </summary>
 	private PlayerBase _PlayerBaseComponent;
 
+	/// <summary>
+	/// マゼルフラッシュTransform
+	/// </summary>
+	[InspectorName("マゼルフラッシュTransform")]
+	[SerializeField]
+	private Transform _MuzelFlashTransform;
+
+	/// <summary>
+	/// 弾Prefab
+	/// </summary>
+	[InspectorName("弾Prefab")]
+	[SerializeField]
+	private BulletBase _BulletPrefab;
+
 	#endregion // 定義
+
+	/// <summary>
+	/// 外部からの発砲命令
+	/// </summary>
+	public void Shot()
+	{
+		var obj = Instantiate(_BulletPrefab, _MuzelFlashTransform.position, Quaternion.LookRotation(_MuzelFlashTransform.forward));
+		obj.Init(this);
+	}
 
 	// Start is called before the first frame update
     void Start()

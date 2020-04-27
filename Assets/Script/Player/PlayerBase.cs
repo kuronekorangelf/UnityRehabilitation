@@ -153,6 +153,11 @@ public class PlayerBase : MonoBehaviour
 	private delegate void UpdateShotCallback();
 	private UpdateShotCallback _UpdateShotCallback = null;
 
+	/// <summary>
+	/// 武器管理クラス保持
+	/// </summary>
+	private WeaponControl _WeaponController;
+
 	#endregion // フィールド
 
 	/// <summary>
@@ -172,6 +177,8 @@ public class PlayerBase : MonoBehaviour
 		_BulletChargeIntervalTimer = 0.0f;
 
 		_UpdateShotCallback = updateShotIdleCallback;
+
+		_WeaponController = GetComponentInChildren<WeaponControl>(true);
 	}
 
 	/// <summary>
@@ -282,7 +289,8 @@ public class PlayerBase : MonoBehaviour
 			_ShotTimer += Time.deltaTime;
 			if (_ShotTimer > ShotTimeInterval)
 			{
-				Debug.Log("ShotTest!BulletNum : " + _BulletNum.ToString());
+				_WeaponController.Shot();
+				Debug.Log("ShotTest! BulletNum : " + _BulletNum.ToString());
 				_ShotTimer = 0.0f;
 
 				// 残弾を減らす
@@ -313,6 +321,8 @@ public class PlayerBase : MonoBehaviour
 				{
 					// 装填
 					updateBulletCharge();
+					// 装填し始めたらいつでも再発射できるように
+					_ShotTimer = ShotTimeInterval;
 				}
 			}
 		}
